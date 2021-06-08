@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Babylon.js sample code</title>
+
+        <!-- Babylon.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+        <script src="https://preview.babylonjs.com/ammo.js"></script>
+        <script src="https://preview.babylonjs.com/cannon.js"></script>
+        <script src="https://preview.babylonjs.com/Oimo.js"></script>
+        <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+        <script src="https://preview.babylonjs.com/babylon.js"></script>
+        <script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+        <script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        <script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+        <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+        <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+        <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+        </style>
+    </head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <script>
+        var canvas = document.getElementById("renderCanvas");
+
+        var engine = null;
+        var scene = null;
+        var sceneToRender = null;
+        var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
+
+        var createScene = function () {
+            var scene = new BABYLON.Scene(engine);
+
+            //Skybox
+            var skybox = BABYLON.MeshBuilder.CreateBox("skyBox", {size:1000.0}, scene);
+            var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", scene);
+            skyboxMaterial.backFaceCulling = false;
+            skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("textures/skybox", scene);
+            skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+            skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+            skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+            skybox.material = skyboxMaterial;
+            
+            var camera = new BABYLON.ArcRotateCamera("Camera",Math.PI / 8, Math.PI / 2.5, 50, BABYLON.Vector3.Zero(), scene);
+            
+            camera.attachControl(canvas, true);
+            
+            var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
+
+            const box = BABYLON.MeshBuilder.CreateBox("box1", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+            box.position.x = 0;
+            box.position.y = 25;
+            box.rotation.y = 1.56;
+            box.position.z = -55;
+            box.rotation.z = 0.2;
+            
+            let holder = BABYLON.MeshBuilder.CreateSphere("holder", {diameter: 2, segments: 4}, scene);
+            let wheel = BABYLON.MeshBuilder.CreateSphere("base", {diameterY: 10, diameterZ: 1, diameterX: 10}, scene);
+            holder.position.x = 0;
+            holder.position.y = 10;
+            holder.position.z = -40;
+            holder.rotation.y = 7.85;
+            
+            let box1 = BABYLON.MeshBuilder.CreateBox("1", {width: 4, height:1, depth:3}, scene);
+            box1.parent = wheel;
+            box1.position.x = 5;
+            
+            let box2 = box1.clone("2");
+            box2.position.x = -5;
+            
+            let box3 = box1.clone("3");
+            box3.position.x = 0;
+            box3.position.y = 5;
+            box3.rotation.z = Math.PI / 2;
+            
+            box4 = box3.clone("4");
+            box4.position.y = -5;
+
+            
+
+            var gravityVector = new BABYLON.Vector3(0, -10, 0);
+	var physicsPlugin = new BABYLON.CannonJSPlugin();
+	scene.enablePhysics(gravityVector, physicsPlugin);
+
+	var ball;
+	var pot1;
+	var pot2;
+	var support1;
+	var support2;    	
+	var hinge;
+	var bridge;
+	// https://dl.dropboxusercontent.com/u/20766916/BridgeHingePokonci.blend
+	// https://dl.dropboxusercontent.com/u/20766916/BridgeHingePokonci.babylon
+    // https://gist.githubusercontent.com/iansheehansi/4e36c7586f1f736cb99b87683b20fc1a/raw/518c08927772f5e7be2428250c6fceef2f9cde03/BridgeHingePokonci.babylon
+    BABYLON.SceneLoader.ImportMesh("", "https://gist.githubusercontent.com/iansheehansi/4e36c7586f1f736cb99b87683b20fc1a/raw/518c08927772f5e7be2428250c6fceef2f9cde03/", "BridgeHingePokonci.babylon", scene, function (meshes) {
+		for (var a = 0; a < meshes.length; a++) {
+			var mesh = meshes[a];
+			console.log(mesh.id);
+			if (mesh.id.substring(0, 4) == "Pot1") {
+				pot1 = mesh;
+				pot1.physicsImpostor = new BABYLON.PhysicsImpostor(pot1, BABYLON.PhysicsImpostor.MeshImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
+			}
+			if (mesh.id.substring(0, 4) == "Pot2") {
+				pot2 = mesh;
+				pot2.physicsImpostor = new BABYLON.PhysicsImpostor(pot2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
+			}
+			if (mesh.id.substring(0, 8) == "Support1") {
+				support1 = mesh;
+				support1.physicsImpostor = new BABYLON.PhysicsImpostor(support1, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
+			}
+			if (mesh.id.substring(0, 8) == "Support2") {
+				support2 = mesh;
+				support2.physicsImpostor = new BABYLON.PhysicsImpostor(support2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
+			}
+			if (mesh.id.substring(0, 5) == "Hinge") {
+				hinge = mesh;
+				hinge.physicsImpostor = new BABYLON.PhysicsImpostor(hinge, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
+			}
+			if (mesh.id.substring(0, 6) == "Bridge") {
+				//scene.removeMesh(mesh);
+				bridge = mesh;				
+				bridge.physicsImpostor = new BABYLON.PhysicsImpostor(bridge, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, friction: 1, restitution: 0 }, scene);
+			}
+			if (mesh.id.substring(0, 4) == "Ball") {
+				ball = mesh;
+				ball.physicsImpostor = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, friction: 1, restitution: 0 }, scene);
+			}
+
+		} // end for
+			
+		console.log("hinge origin: " + hinge.position); // X: 0 Y:-0.0053 Z:1.5006
+		console.log("bridge origin: " + bridge.position); // X: 0 Y:-0.0053 Z:1.5006
+		var joint = new BABYLON.HingeJoint({
+       			mainPivot:  new BABYLON.Vector3(0, -10, 0), // origin od mosta je center spodnjega face-ta 
+      			connectedPivot: new BABYLON.Vector3(0, 0, 0),
+       			mainAxis: new BABYLON.Vector3(1, 0, 0),
+           	    connectedAxis: new BABYLON.Vector3(1, 0, 0)
+            });            
+           	bridge.physicsImpostor.addJoint(hinge.physicsImpostor, joint);            
+		//bridge.physicsImpostor.addJoint(hinge.physicsImpostor, joint);
+
+        joint.rotation.z = 90;
+	});
+
+            var ticker = 0;
+
+            let spheres = [];
+
+            scene.registerBeforeRender(function() {
+                if(ticker++ % 100) return;
+
+                let s = BABYLON.MeshBuilder.CreateSphere("s", {diameter: 2});
+                s.position.y = 100;
+                s.position.z = -60;
+                s.position.x = 0;
+
+                s.physicsImpostor = new BABYLON.PhysicsImpostor(s, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1});
+                spheres.push(s);
+            });
+
+            //domino
+            let box5 = BABYLON.MeshBuilder.CreateBox("5", {width: 0.25, height:2, depth:1}, scene);
+            box5.position.x = -27;
+            box5.position.y = 0.5;
+            box5.position.z = 0;
+            
+            let box6 = BABYLON.MeshBuilder.CreateBox("6", {width: 0.25, height:2, depth:1}, scene);
+            box6.position.x = -29;
+            box6.position.y = 0.5;
+            box6.position.z = 0;
+            
+            let box7 = BABYLON.MeshBuilder.CreateBox("7", {width: 0.25, height:2, depth:1}, scene);
+            box7.position.x = -31;
+            box7.position.y = 0.5;
+            box7.position.z = 0;
+
+            let box8 = BABYLON.MeshBuilder.CreateBox("8", {width: 0.25, height:2, depth:1}, scene);
+            box8.position.x = -33;
+            box8.position.y = 0.5;
+            box8.position.z = 0;
+
+            let box9 = BABYLON.MeshBuilder.CreateBox("9", {width: 0.25, height:2, depth:1}, scene);
+            box9.position.x = -35;
+            box9.position.y = 0.5;
+            box9.position.z = 0;
+
+            let chao = BABYLON.MeshBuilder.CreateBox("c", {width: 25, height:0.5, depth:20}, scene);
+            chao.position.x = -35;
+            chao.position.y = -1;
+            chao.position.z = 0;
+            chao.rotation.y = 10;
+            //fim
+            
+                //physics
+                let cannon = true;
+                let forceFactor = cannon ? 1 : 1500; 
+                scene.enablePhysics(undefined, (!cannon ? new BABYLON.OimoJSPlugin(100) : new BABYLON.CannonJSPlugin(true, 100)));
+                scene.enablePhysics(new BABYLON.Vector3(0, -1, 0), new BABYLON.AmmoJSPlugin(true));
+
+                // var plugin = scene.getPhysicsEngine().getPhysicsPlugin();
+                // plugin.setTimeStep(1/10);
+                
+                // plugin.setFixedTimeStep(1/10);
+
+                // plugin.setMaxSteps(1); 
+            
+                [box, box1, box2, box3, box4, chao].forEach((mesh) => {
+                    mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0});
+                });
+                //fisica domino
+                [box5, box6, box7, box8, box9].forEach((mesh) => {
+                    mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0.1});
+                   
+                });
+
+                wheel.physicsImpostor = new BABYLON.PhysicsImpostor(wheel, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 10});
+                holder.physicsImpostor = new BABYLON.PhysicsImpostor(holder, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 0});
+            
+                var joint1 = new BABYLON.HingeJoint({  
+                    mainPivot: new BABYLON.Vector3(0, 0, 0),
+                    connectedPivot: new BABYLON.Vector3(0, 0, 0),
+                    mainAxis: new BABYLON.Vector3(0, 0, -1),
+                    connectedAxis: new BABYLON.Vector3(0, 0, -1),
+                    nativeParams: {
+                    }
+                });
+                holder.physicsImpostor.addJoint(wheel.physicsImpostor, joint1);  
+            
+                joint1.setMotor(3 * forceFactor, 20 * forceFactor);
+
+                return scene;
+        }
+                window.initFunction = async function() {               
+                    var asyncEngineCreation = async function() {
+                        try {
+                        return createDefaultEngine();
+                        } catch(e) {
+                        console.log("the available createEngine function failed. Creating the default engine instead");
+                        return createDefaultEngine();
+                        }
+                    }
+
+                    window.engine = await asyncEngineCreation();
+        if (!engine) throw 'engine should not be null.';
+        window.scene = createScene();};
+        initFunction().then(() => {sceneToRender = scene        
+            engine.runRenderLoop(function () {
+                if (sceneToRender && sceneToRender.activeCamera) {
+                    sceneToRender.render();
+                }
+            });
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+</body>
+</html>
