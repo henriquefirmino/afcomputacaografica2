@@ -59,7 +59,7 @@
             skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
             skybox.material = skyboxMaterial;
             
-            var camera = new BABYLON.ArcRotateCamera("Camera",Math.PI / 8, Math.PI / 2.5, 50, BABYLON.Vector3.Zero(), scene);
+            var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 8, Math.PI / 2.5, 50, BABYLON.Vector3.Zero(), scene);
             
             camera.attachControl(canvas, true);
             
@@ -96,69 +96,67 @@
 
             
 
-            var gravityVector = new BABYLON.Vector3(0, -10, 0);
-	var physicsPlugin = new BABYLON.CannonJSPlugin();
-	scene.enablePhysics(gravityVector, physicsPlugin);
+    //         var gravityVector = new BABYLON.Vector3(0, -10, 0);
+	// var physicsPlugin = new BABYLON.CannonJSPlugin();
+	// scene.enablePhysics(gravityVector, physicsPlugin);
 
-	var ball;
-	var pot1;
-	var pot2;
-	var support1;
-	var support2;    	
-	var hinge;
-	var bridge;
-	// https://dl.dropboxusercontent.com/u/20766916/BridgeHingePokonci.blend
-	// https://dl.dropboxusercontent.com/u/20766916/BridgeHingePokonci.babylon
-    // https://gist.githubusercontent.com/iansheehansi/4e36c7586f1f736cb99b87683b20fc1a/raw/518c08927772f5e7be2428250c6fceef2f9cde03/BridgeHingePokonci.babylon
-    BABYLON.SceneLoader.ImportMesh("", "https://gist.githubusercontent.com/iansheehansi/4e36c7586f1f736cb99b87683b20fc1a/raw/518c08927772f5e7be2428250c6fceef2f9cde03/", "BridgeHingePokonci.babylon", scene, function (meshes) {
-		for (var a = 0; a < meshes.length; a++) {
-			var mesh = meshes[a];
-			console.log(mesh.id);
-			if (mesh.id.substring(0, 4) == "Pot1") {
-				pot1 = mesh;
-				pot1.physicsImpostor = new BABYLON.PhysicsImpostor(pot1, BABYLON.PhysicsImpostor.MeshImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
-			}
-			if (mesh.id.substring(0, 4) == "Pot2") {
-				pot2 = mesh;
-				pot2.physicsImpostor = new BABYLON.PhysicsImpostor(pot2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
-			}
-			if (mesh.id.substring(0, 8) == "Support1") {
-				support1 = mesh;
-				support1.physicsImpostor = new BABYLON.PhysicsImpostor(support1, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
-			}
-			if (mesh.id.substring(0, 8) == "Support2") {
-				support2 = mesh;
-				support2.physicsImpostor = new BABYLON.PhysicsImpostor(support2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
-			}
-			if (mesh.id.substring(0, 5) == "Hinge") {
-				hinge = mesh;
-				hinge.physicsImpostor = new BABYLON.PhysicsImpostor(hinge, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
-			}
-			if (mesh.id.substring(0, 6) == "Bridge") {
-				//scene.removeMesh(mesh);
-				bridge = mesh;				
-				bridge.physicsImpostor = new BABYLON.PhysicsImpostor(bridge, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, friction: 1, restitution: 0 }, scene);
-			}
-			if (mesh.id.substring(0, 4) == "Ball") {
-				ball = mesh;
-				ball.physicsImpostor = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, friction: 1, restitution: 0 }, scene);
-			}
+	// var ball;
+	// var pot1;
+	// var pot2;
+	// var support1;
+	// var support2;    	
+	// var hinge;
+	// var bridge;
 
-		} // end for
+    // BABYLON.SceneLoader.ImportMesh("", "https://gist.githubusercontent.com/iansheehansi/4e36c7586f1f736cb99b87683b20fc1a/raw/518c08927772f5e7be2428250c6fceef2f9cde03/", "BridgeHingePokonci.babylon", scene, function (meshes) {
+	// 	for (var a = 0; a < meshes.length; a++) {
+	// 		var mesh = meshes[a];
+	// 		console.log(mesh.id);
+	// 		if (mesh.id.substring(0, 4) == "Pot1") {
+	// 			pot1 = mesh;
+	// 			pot1.physicsImpostor = new BABYLON.PhysicsImpostor(pot1, BABYLON.PhysicsImpostor.MeshImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
+	// 		}
+	// 		if (mesh.id.substring(0, 4) == "Pot2") {
+	// 			pot2 = mesh;
+	// 			pot2.physicsImpostor = new BABYLON.PhysicsImpostor(pot2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
+	// 		}
+	// 		if (mesh.id.substring(0, 8) == "Support1") {
+	// 			support1 = mesh;
+	// 			support1.physicsImpostor = new BABYLON.PhysicsImpostor(support1, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
+	// 		}
+	// 		if (mesh.id.substring(0, 8) == "Support2") {
+	// 			support2 = mesh;
+	// 			support2.physicsImpostor = new BABYLON.PhysicsImpostor(support2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
+	// 		}
+	// 		if (mesh.id.substring(0, 5) == "Hinge") {
+	// 			hinge = mesh;
+	// 			hinge.physicsImpostor = new BABYLON.PhysicsImpostor(hinge, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
+	// 		}
+	// 		if (mesh.id.substring(0, 6) == "Bridge") {
+	// 			//scene.removeMesh(mesh);
+	// 			bridge = mesh;				
+	// 			bridge.physicsImpostor = new BABYLON.PhysicsImpostor(bridge, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, friction: 1, restitution: 0 }, scene);
+	// 		}
+	// 		if (mesh.id.substring(0, 4) == "Ball") {
+	// 			ball = mesh;
+	// 			ball.physicsImpostor = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, friction: 1, restitution: 0 }, scene);
+	// 		}
+
+	// 	} // end for
 			
-		console.log("hinge origin: " + hinge.position); // X: 0 Y:-0.0053 Z:1.5006
-		console.log("bridge origin: " + bridge.position); // X: 0 Y:-0.0053 Z:1.5006
-		var joint = new BABYLON.HingeJoint({
-       			mainPivot:  new BABYLON.Vector3(0, -10, 0), // origin od mosta je center spodnjega face-ta 
-      			connectedPivot: new BABYLON.Vector3(0, 0, 0),
-       			mainAxis: new BABYLON.Vector3(1, 0, 0),
-           	    connectedAxis: new BABYLON.Vector3(1, 0, 0)
-            });            
-           	bridge.physicsImpostor.addJoint(hinge.physicsImpostor, joint);            
-		//bridge.physicsImpostor.addJoint(hinge.physicsImpostor, joint);
+	// 	console.log("hinge origin: " + hinge.position); // X: 0 Y:-0.0053 Z:1.5006
+	// 	console.log("bridge origin: " + bridge.position); // X: 0 Y:-0.0053 Z:1.5006
+	// 	var joint = new BABYLON.HingeJoint({
+    //    			mainPivot:  new BABYLON.Vector3(0, -10, 0), // origin od mosta je center spodnjega face-ta 
+    //   			connectedPivot: new BABYLON.Vector3(0, 0, 0),
+    //    			mainAxis: new BABYLON.Vector3(1, 0, 0),
+    //        	    connectedAxis: new BABYLON.Vector3(1, 0, 0)
+    //         });            
+    //        	bridge.physicsImpostor.addJoint(hinge.physicsImpostor, joint);            
+	// 	//bridge.physicsImpostor.addJoint(hinge.physicsImpostor, joint);
 
-        joint.rotation.z = 90;
-	});
+    //     joint.rotation.z = 90;
+	// });
 
             var ticker = 0;
 
@@ -210,9 +208,9 @@
             let chao = BABYLON.MeshBuilder.CreateBox("c", {width: 25, height:0.5, depth:20}, scene);
             chao.position.x = 0;
             chao.position.y = 0;
-            chao.position.z = 34;
+            chao.position.z = 33;
             chao.rotation.y = 3.15;
-            chao.isVisible = false;
+            //chao.isVisible = false;
             //fim
             
                 //physics
