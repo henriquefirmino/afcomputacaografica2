@@ -65,12 +65,83 @@
             
             var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
 
-            const box = BABYLON.MeshBuilder.CreateBox("box1", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+            var gravityVector = new BABYLON.Vector3(0, -10, 0);
+            var physicsPlugin = new BABYLON.CannonJSPlugin();
+            scene.enablePhysics(gravityVector, physicsPlugin);
+
+            //physics
+            let cannon = true;
+            let forceFactor = cannon ? 1 : 1500; 
+            scene.enablePhysics(undefined, (!cannon ? new BABYLON.OimoJSPlugin(100) : new BABYLON.CannonJSPlugin(true, 100)));
+            scene.enablePhysics(new BABYLON.Vector3(0, -1, 0), new BABYLON.AmmoJSPlugin(true));
+
+            //base giratorio horizontal
+            let axel1 = BABYLON.MeshBuilder.CreateCylinder("axel1", {diameter: 1, height:2}, scene);
+            axel1.material = new BABYLON.StandardMaterial("", scene);
+            axel1.material.diffuseColor = new BABYLON.Color3(0, 1, 0);
+            axel1.rotation.x = Math.PI / 2;
+            axel1.position.z = 5;
+        
+            let local1 = localAxes(8);
+            local1.parent = axel1;
+        
+        	let wheel1 = BABYLON.MeshBuilder.CreateBox("base1", {lenght: 70, height: 0.2, width: 10, depth: 38}, scene);
+            wheel1.material = new BABYLON.StandardMaterial("wheelMat", scene);
+            wheel1.material.diffuseTexture = new BABYLON.Texture("textures/1.jpg", scene);
+            wheel1.rotation.x = Math.PI/2;
+            wheel1.position.z = 5;
+        
+            // base
+            wheel1.physicsImpostor = new BABYLON.PhysicsImpostor(wheel1, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 10, friction:0});
+        
+            // mesh central
+            axel1.physicsImpostor = new BABYLON.PhysicsImpostor(axel1, BABYLON.PhysicsImpostor.CylinderImpostor, {mass: 0, friction: 0});
+        
+            var joint1 = new BABYLON.HingeJoint({  
+                // mainPivot: new BABYLON.Vector3(0, 0, 0),
+                // connectedPivot: new BABYLON.Vector3(0, 0, 0),
+                // mainAxis: new BABYLON.Vector3(0, 1, 0),
+                // connectedAxis: new BABYLON.Vector3(0, 1, 0),
+                // nativeParams: {
+                // }
+            });
+            axel1.physicsImpostor.addJoint(wheel1.physicsImpostor, joint1);   
+
+            axel1.isVisible = false;
+        
+            // começa a rodar
+            joint1.setMotor(-1, 1);
+        
+            // eixos
+            function localAxes(size) {
+                var pilot_local_axisX = BABYLON.Mesh.CreateLines("pilot_local_axisX", [], scene);
+        
+                pilot_local_axisY = BABYLON.Mesh.CreateLines("pilot_local_axisY", [], scene);
+        
+                var pilot_local_axisZ = BABYLON.Mesh.CreateLines("pilot_local_axisZ", [], scene);
+        
+                var local_origin = BABYLON.MeshBuilder.CreateBox("local_origin", { size: 1 }, scene);
+                local_origin.isVisible = false;
+        
+                return local_origin;
+        
+            }
+
+            //plataformas
+            var box = BABYLON.MeshBuilder.CreateBox("box1", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
             box.position.x = 0;
             box.position.y = 25;
             box.rotation.y = 1.56;
             box.position.z = -55;
             box.rotation.z = 0.2;
+
+            var plat1 = BABYLON.MeshBuilder.CreateBox("plat1", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+
+            var plat2 = BABYLON.MeshBuilder.CreateBox("plat2", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+
+            var plat3 = BABYLON.MeshBuilder.CreateBox("plat3", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+
+            var plat4 = BABYLON.MeshBuilder.CreateBox("plat4", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
             
             let holder = BABYLON.MeshBuilder.CreateSphere("holder", {diameter: 2, segments: 4}, scene);
             let wheel = BABYLON.MeshBuilder.CreateSphere("base", {diameterY: 10, diameterZ: 1, diameterX: 10}, scene);
@@ -94,85 +165,33 @@
             box4 = box3.clone("4");
             box4.position.y = -5;
 
+            // var gravityVector = new BABYLON.Vector3(0, -10, 0);
+            // var physicsPlugin = new BABYLON.CannonJSPlugin();
+            // scene.enablePhysics(gravityVector, physicsPlugin);
+
+            var ball = new BABYLON.MeshBuilder.CreateSphere("bola", {diameter: 3});
+            ball.position.x = 0;
+            ball.position.y = 2;
+            ball.position.z = 50;
+
+            ball.physicsImpostor = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1});
             
-
-    //         var gravityVector = new BABYLON.Vector3(0, -10, 0);
-	// var physicsPlugin = new BABYLON.CannonJSPlugin();
-	// scene.enablePhysics(gravityVector, physicsPlugin);
-
-	// var ball;
-	// var pot1;
-	// var pot2;
-	// var support1;
-	// var support2;    	
-	// var hinge;
-	// var bridge;
-
-    // BABYLON.SceneLoader.ImportMesh("", "https://gist.githubusercontent.com/iansheehansi/4e36c7586f1f736cb99b87683b20fc1a/raw/518c08927772f5e7be2428250c6fceef2f9cde03/", "BridgeHingePokonci.babylon", scene, function (meshes) {
-	// 	for (var a = 0; a < meshes.length; a++) {
-	// 		var mesh = meshes[a];
-	// 		console.log(mesh.id);
-	// 		if (mesh.id.substring(0, 4) == "Pot1") {
-	// 			pot1 = mesh;
-	// 			pot1.physicsImpostor = new BABYLON.PhysicsImpostor(pot1, BABYLON.PhysicsImpostor.MeshImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
-	// 		}
-	// 		if (mesh.id.substring(0, 4) == "Pot2") {
-	// 			pot2 = mesh;
-	// 			pot2.physicsImpostor = new BABYLON.PhysicsImpostor(pot2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
-	// 		}
-	// 		if (mesh.id.substring(0, 8) == "Support1") {
-	// 			support1 = mesh;
-	// 			support1.physicsImpostor = new BABYLON.PhysicsImpostor(support1, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
-	// 		}
-	// 		if (mesh.id.substring(0, 8) == "Support2") {
-	// 			support2 = mesh;
-	// 			support2.physicsImpostor = new BABYLON.PhysicsImpostor(support2, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
-	// 		}
-	// 		if (mesh.id.substring(0, 5) == "Hinge") {
-	// 			hinge = mesh;
-	// 			hinge.physicsImpostor = new BABYLON.PhysicsImpostor(hinge, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 1, restitution: 0 }, scene);
-	// 		}
-	// 		if (mesh.id.substring(0, 6) == "Bridge") {
-	// 			//scene.removeMesh(mesh);
-	// 			bridge = mesh;				
-	// 			bridge.physicsImpostor = new BABYLON.PhysicsImpostor(bridge, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 1, friction: 1, restitution: 0 }, scene);
-	// 		}
-	// 		if (mesh.id.substring(0, 4) == "Ball") {
-	// 			ball = mesh;
-	// 			ball.physicsImpostor = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 1, friction: 1, restitution: 0 }, scene);
-	// 		}
-
-	// 	} // end for
-			
-	// 	console.log("hinge origin: " + hinge.position); // X: 0 Y:-0.0053 Z:1.5006
-	// 	console.log("bridge origin: " + bridge.position); // X: 0 Y:-0.0053 Z:1.5006
-	// 	var joint = new BABYLON.HingeJoint({
-    //    			mainPivot:  new BABYLON.Vector3(0, -10, 0), // origin od mosta je center spodnjega face-ta 
-    //   			connectedPivot: new BABYLON.Vector3(0, 0, 0),
-    //    			mainAxis: new BABYLON.Vector3(1, 0, 0),
-    //        	    connectedAxis: new BABYLON.Vector3(1, 0, 0)
-    //         });            
-    //        	bridge.physicsImpostor.addJoint(hinge.physicsImpostor, joint);            
-	// 	//bridge.physicsImpostor.addJoint(hinge.physicsImpostor, joint);
-
-    //     joint.rotation.z = 90;
-	// });
 
             var ticker = 0;
 
             let spheres = [];
 
-            scene.registerBeforeRender(function() {
-                if(ticker++ % 100) return;
+            // scene.registerBeforeRender(function() {
+            //     if(ticker++ % 30) return;
 
-                let s = BABYLON.MeshBuilder.CreateSphere("s", {diameter: 2});
-                s.position.y = 100;
-                s.position.z = -60;
-                s.position.x = 0;
+            //     let s = BABYLON.MeshBuilder.CreateSphere("s", {diameter: 2});
+            //     s.position.y = 100;
+            //     s.position.z = -60;
+            //     s.position.x = 0;
 
-                s.physicsImpostor = new BABYLON.PhysicsImpostor(s, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1});
-                spheres.push(s);
-            });
+            //     s.physicsImpostor = new BABYLON.PhysicsImpostor(s, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 5});
+            //     spheres.push(s);
+            // });
 
             //domino
             let box5 = BABYLON.MeshBuilder.CreateBox("5", {width: 0.75, height:5, depth:1.5}, scene);
@@ -184,73 +203,59 @@
             let box6 = BABYLON.MeshBuilder.CreateBox("6", {width: 0.75, height:5, depth:1.5}, scene);
             box6.position.x = 0;
             box6.position.y = 3;
-            box6.position.z = 26;
+            box6.position.z = 29;
             box6.rotation.y = 1.5;
             
             let box7 = BABYLON.MeshBuilder.CreateBox("7", {width: 0.75, height:5, depth:1.5}, scene);
             box7.position.x = 0;
             box7.position.y = 3;
-            box7.position.z = 28;
+            box7.position.z = 34;
             box7.rotation.y = 1.5;
 
             let box8 = BABYLON.MeshBuilder.CreateBox("8", {width: 0.75, height:5, depth:1.5}, scene);
             box8.position.x = 0;
             box8.position.y = 3;
-            box8.position.z = 30;
+            box8.position.z = 39;
             box8.rotation.y = 1.5;
 
             let box9 = BABYLON.MeshBuilder.CreateBox("9", {width: 0.75, height:5, depth:1.5}, scene);
             box9.position.x = 0;
             box9.position.y = 3;
-            box9.position.z = 32;
+            box9.position.z = 44;
             box9.rotation.y = 1.5;
 
-            let chao = BABYLON.MeshBuilder.CreateBox("c", {width: 25, height:0.5, depth:20}, scene);
+            let chao = BABYLON.MeshBuilder.CreateBox("c", {width: 25, height:0.5, depth:40}, scene);
             chao.position.x = 0;
             chao.position.y = 0;
-            chao.position.z = 33;
+            chao.position.z = 38;
             chao.rotation.y = 3.15;
             //chao.isVisible = false;
             //fim
             
-                //physics
-                let cannon = true;
-                let forceFactor = cannon ? 1 : 1500; 
-                scene.enablePhysics(undefined, (!cannon ? new BABYLON.OimoJSPlugin(100) : new BABYLON.CannonJSPlugin(true, 100)));
-                scene.enablePhysics(new BABYLON.Vector3(0, -1, 0), new BABYLON.AmmoJSPlugin(true));
-
-                // var plugin = scene.getPhysicsEngine().getPhysicsPlugin();
-                // plugin.setTimeStep(1/10);
+            [box, box1, box2, box3, box4, chao].forEach((mesh) => {
+                mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0});
+            });
+            //fisica domino
+            [box5, box6, box7, box8, box9].forEach((mesh) => {
+                mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 5});  
+            });
                 
-                // plugin.setFixedTimeStep(1/10);
-
-                // plugin.setMaxSteps(1); 
+            wheel.physicsImpostor = new BABYLON.PhysicsImpostor(wheel, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 10});
+            holder.physicsImpostor = new BABYLON.PhysicsImpostor(holder, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 0});
             
-                [box, box1, box2, box3, box4, chao].forEach((mesh) => {
-                    mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0});
-                });
-                //fisica domino
-                [box5, box6, box7, box8, box9].forEach((mesh) => {
-                    mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0.1});
-                   
-                });
-
-                wheel.physicsImpostor = new BABYLON.PhysicsImpostor(wheel, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 10});
-                holder.physicsImpostor = new BABYLON.PhysicsImpostor(holder, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 0});
+            var joint1 = new BABYLON.HingeJoint({  
+                mainPivot: new BABYLON.Vector3(0, 0, 0),
+                connectedPivot: new BABYLON.Vector3(0, 0, 0),
+                mainAxis: new BABYLON.Vector3(0, 0, -1),
+                connectedAxis: new BABYLON.Vector3(0, 0, -1),
+                nativeParams: {
+                }
+            });
+            holder.physicsImpostor.addJoint(wheel.physicsImpostor, joint1);  
             
-                var joint1 = new BABYLON.HingeJoint({  
-                    mainPivot: new BABYLON.Vector3(0, 0, 0),
-                    connectedPivot: new BABYLON.Vector3(0, 0, 0),
-                    mainAxis: new BABYLON.Vector3(0, 0, -1),
-                    connectedAxis: new BABYLON.Vector3(0, 0, -1),
-                    nativeParams: {
-                    }
-                });
-                holder.physicsImpostor.addJoint(wheel.physicsImpostor, joint1);  
-            
-                joint1.setMotor(3 * forceFactor, 20 * forceFactor);
+            joint1.setMotor(3 * forceFactor, 20 * forceFactor);
 
-                return scene;
+            return scene;
         }
                 window.initFunction = async function() {               
                     var asyncEngineCreation = async function() {
