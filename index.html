@@ -65,6 +65,11 @@
             
             var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
 
+            var music = new BABYLON.Sound("music", "textures/background.mp3", scene, null, {
+                loop: true,
+                autoplay: true,
+            });
+
             var gravityVector = new BABYLON.Vector3(0, -10, 0);
             var physicsPlugin = new BABYLON.CannonJSPlugin();
             scene.enablePhysics(gravityVector, physicsPlugin);
@@ -136,12 +141,20 @@
             box.rotation.z = 0.2;
 
             var plat1 = BABYLON.MeshBuilder.CreateBox("plat1", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+            plat1.material = new BABYLON.StandardMaterial("plat1Mat", scene);
+            plat1.material.diffuseTexture = new BABYLON.Texture("textures/blue.jpg", scene);
 
             var plat2 = BABYLON.MeshBuilder.CreateBox("plat2", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+            plat2.material = new BABYLON.StandardMaterial("plat2Mat", scene);
+            plat2.material.diffuseTexture = new BABYLON.Texture("textures/green.jpg", scene);
 
             var plat3 = BABYLON.MeshBuilder.CreateBox("plat3", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+            plat3.material = new BABYLON.StandardMaterial("plat3Mat", scene);
+            plat3.material.diffuseTexture = new BABYLON.Texture("textures/blue.jpg", scene);
 
             var plat4 = BABYLON.MeshBuilder.CreateBox("plat4", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+            plat4.material = new BABYLON.StandardMaterial("plat4Mat", scene);
+            plat4.material.diffuseTexture = new BABYLON.Texture("textures/green.jpg", scene);
 
             var plat5 = BABYLON.MeshBuilder.CreateBox("plat5", {lenght: 10, width: 5, depth: 0.1, height: 20}, scene);
 
@@ -196,10 +209,16 @@
             holder.position.y = 10;
             holder.position.z = -40;
             holder.rotation.y = 7.85;
+
+            wheel.material = new BABYLON.StandardMaterial("wheelMat", scene);
+            wheel.material.diffuseTexture = new BABYLON.Texture("textures/wheel.jpg", scene);
             
             let box1 = BABYLON.MeshBuilder.CreateBox("1", {width: 4, height:1, depth:3}, scene);
             box1.parent = wheel;
             box1.position.x = 5;
+
+            box1.material = new BABYLON.StandardMaterial("box1Mat", scene);
+            box1.material.diffuseTexture = new BABYLON.Texture("textures/wood.jpg", scene);
             
             let box2 = box1.clone("2");
             box2.position.x = -5;
@@ -236,6 +255,9 @@
                 s.position.y = 100;
                 s.position.z = -60;
                 s.position.x = 0;
+
+                s.material = new BABYLON.StandardMaterial("sMat", scene);
+                s.material.diffuseTexture = new BABYLON.Texture("textures/red.jpg", scene);
 
                 s.physicsImpostor = new BABYLON.PhysicsImpostor(s, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 5});
                 spheres.push(s);
@@ -283,6 +305,8 @@
             box9.rotation.y = 1.5;
 
             let chao = BABYLON.MeshBuilder.CreateBox("c", {width: 25, height:0.5, depth:40}, scene);
+            chao.material = new BABYLON.StandardMaterial("chaoMat", scene);
+            chao.material.diffuseTexture = new BABYLON.Texture("textures/wood2.jpg", scene);
             chao.position.x = 0;
             chao.position.y = 0;
             chao.position.z = 38;
