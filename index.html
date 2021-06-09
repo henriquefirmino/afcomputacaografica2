@@ -203,6 +203,55 @@
             plat8.rotation.y = 1.56;
             plat8.rotation.z = -0.5;
 
+            var cilindro1 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            cilindro1.position.y = -25;
+            cilindro1.position.z = 66;
+            
+            var cilindro2 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            cilindro2.position.x = 4;
+            cilindro2.position.y = -25;
+            cilindro2.position.z = 68;
+
+            var cilindro3 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            cilindro3.position.x = 3;
+            cilindro3.position.y = -25;
+            cilindro3.position.z = 67;
+
+            var cilindro4 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            cilindro4.position.x = -2;
+            cilindro4.position.y = -25;
+            cilindro4.position.z = 67;
+
+            var cilindro5 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            cilindro5.position.x = -3;
+            cilindro5.position.y = -25;
+            cilindro5.position.z = 68;
+
+            var cilindro6 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            cilindro6.position.x = -4;
+            cilindro6.position.y = -25;
+            cilindro6.position.z = 69;
+
+            var cilindro7 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            cilindro7.position.x = -2;
+            cilindro7.position.y = -25;
+            cilindro7.position.z = 70;
+
+            var cilindro8 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            cilindro8.position.x = 0;
+            cilindro8.position.y = -25;
+            cilindro8.position.z = 70.75;
+
+            var cilindro9 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            cilindro9.position.x = 3;
+            cilindro9.position.y = -25;
+            cilindro9.position.z = 70;
+
+            var cilindro10 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            cilindro10.position.x = 4;
+            cilindro10.position.y = -25;
+            cilindro10.position.z = 69;
+
             let holder = BABYLON.MeshBuilder.CreateSphere("holder", {diameter: 2, segments: 4}, scene);
             let wheel = BABYLON.MeshBuilder.CreateSphere("base", {diameterY: 10, diameterZ: 1, diameterX: 10}, scene);
             holder.position.x = 0;
@@ -351,6 +400,10 @@
 
             //fisica plataformas
             [plat1, plat2, plat3, plat4, plat5, plat6, plat7, plat8].forEach((mesh) => {
+                mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0});  
+            });
+
+            [cilindro1, cilindro2, cilindro3, cilindro4, cilindro5, cilindro6, cilindro7, cilindro8, cilindro9, cilindro10].forEach((mesh) => {
                 mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0});  
             });
                 
