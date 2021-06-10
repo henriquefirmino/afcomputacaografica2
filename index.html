@@ -80,7 +80,7 @@
             scene.enablePhysics(undefined, (!cannon ? new BABYLON.OimoJSPlugin(100) : new BABYLON.CannonJSPlugin(true, 100)));
             scene.enablePhysics(new BABYLON.Vector3(0, -1, 0), new BABYLON.AmmoJSPlugin(true));
 
-            //base giratorio horizontal
+            //base giratoria horizontal
             let axel1 = BABYLON.MeshBuilder.CreateCylinder("axel1", {diameter: 1, height:2}, scene);
             axel1.material = new BABYLON.StandardMaterial("", scene);
             axel1.material.diffuseColor = new BABYLON.Color3(0, 1, 0);
@@ -92,7 +92,7 @@
         
         	let wheel1 = BABYLON.MeshBuilder.CreateBox("base1", {lenght: 70, height: 0.2, width: 10, depth: 38}, scene);
             wheel1.material = new BABYLON.StandardMaterial("wheelMat", scene);
-            wheel1.material.diffuseTexture = new BABYLON.Texture("textures/1.jpg", scene);
+            wheel1.material.diffuseTexture = new BABYLON.Texture("textures/wood2.jpg", scene);
             wheel1.rotation.x = Math.PI/2;
             wheel1.position.z = 5;
         
@@ -115,7 +115,7 @@
             axel1.isVisible = false;
         
             // começa a rodar
-            joint1.setMotor(-1, 1);
+            joint1.setMotor(-1, 5);
         
             // eixos
             function localAxes(size) {
@@ -134,6 +134,8 @@
 
             //plataformas
             var box = BABYLON.MeshBuilder.CreateBox("box1", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+            box.material = new BABYLON.StandardMaterial("boxMat", scene);
+            box.material.diffuseTexture = new BABYLON.Texture("textures/plataforma.jpg", scene);
             box.position.x = 0;
             box.position.y = 25;
             box.rotation.y = 1.56;
@@ -161,8 +163,12 @@
             var plat6 = BABYLON.MeshBuilder.CreateBox("plat6", {lenght: 10, width: 5, depth: 0.1, height: 30}, scene);
 
             var plat7 = BABYLON.MeshBuilder.CreateBox("plat7", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+            plat7.material = new BABYLON.StandardMaterial("plat7Mat", scene);
+            plat7.material.diffuseTexture = new BABYLON.Texture("textures/metal.jpg", scene);
 
             var plat8 = BABYLON.MeshBuilder.CreateBox("plat8", {lenght: 15, width: 15, depth: 5, height: 0.1}, scene);
+            plat8.material = new BABYLON.StandardMaterial("plat8Mat", scene);
+            plat8.material.diffuseTexture = new BABYLON.Texture("textures/metal.jpg", scene);
 
             //posicao plataformas
             plat1.position.y = -5;
@@ -203,54 +209,54 @@
             plat8.rotation.y = 1.56;
             plat8.rotation.z = -0.5;
 
-            var cilindro1 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
-            cilindro1.position.y = -25;
-            cilindro1.position.z = 66;
+            // var cilindro1 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            // cilindro1.position.y = -25;
+            // cilindro1.position.z = 66;
             
-            var cilindro2 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
-            cilindro2.position.x = 4;
-            cilindro2.position.y = -25;
-            cilindro2.position.z = 68;
+            // var cilindro2 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            // cilindro2.position.x = 4;
+            // cilindro2.position.y = -25;
+            // cilindro2.position.z = 68;
 
-            var cilindro3 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
-            cilindro3.position.x = 3;
-            cilindro3.position.y = -25;
-            cilindro3.position.z = 67;
+            // var cilindro3 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            // cilindro3.position.x = 3;
+            // cilindro3.position.y = -25;
+            // cilindro3.position.z = 67;
 
-            var cilindro4 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
-            cilindro4.position.x = -2;
-            cilindro4.position.y = -25;
-            cilindro4.position.z = 67;
+            // var cilindro4 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            // cilindro4.position.x = -2;
+            // cilindro4.position.y = -25;
+            // cilindro4.position.z = 67;
 
-            var cilindro5 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
-            cilindro5.position.x = -3;
-            cilindro5.position.y = -25;
-            cilindro5.position.z = 68;
+            // var cilindro5 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            // cilindro5.position.x = -3;
+            // cilindro5.position.y = -25;
+            // cilindro5.position.z = 68;
 
-            var cilindro6 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
-            cilindro6.position.x = -4;
-            cilindro6.position.y = -25;
-            cilindro6.position.z = 69;
+            // var cilindro6 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            // cilindro6.position.x = -4;
+            // cilindro6.position.y = -25;
+            // cilindro6.position.z = 69;
 
-            var cilindro7 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
-            cilindro7.position.x = -2;
-            cilindro7.position.y = -25;
-            cilindro7.position.z = 70;
+            // var cilindro7 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            // cilindro7.position.x = -2;
+            // cilindro7.position.y = -25;
+            // cilindro7.position.z = 70;
 
-            var cilindro8 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
-            cilindro8.position.x = 0;
-            cilindro8.position.y = -25;
-            cilindro8.position.z = 70.75;
+            // var cilindro8 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            // cilindro8.position.x = 0;
+            // cilindro8.position.y = -25;
+            // cilindro8.position.z = 71;
 
-            var cilindro9 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
-            cilindro9.position.x = 3;
-            cilindro9.position.y = -25;
-            cilindro9.position.z = 70;
+            // var cilindro9 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            // cilindro9.position.x = 3;
+            // cilindro9.position.y = -25;
+            // cilindro9.position.z = 70;
 
-            var cilindro10 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
-            cilindro10.position.x = 4;
-            cilindro10.position.y = -25;
-            cilindro10.position.z = 69;
+            // var cilindro10 = BABYLON.MeshBuilder.CreateCylinder("cilindro", {diameter: 2, height: 5}, scene, false);
+            // cilindro10.position.x = 4;
+            // cilindro10.position.y = -25;
+            // cilindro10.position.z = 69;
 
             let holder = BABYLON.MeshBuilder.CreateSphere("holder", {diameter: 2, segments: 4}, scene);
             let wheel = BABYLON.MeshBuilder.CreateSphere("base", {diameterY: 10, diameterZ: 1, diameterX: 10}, scene);
@@ -258,6 +264,8 @@
             holder.position.y = 10;
             holder.position.z = -40;
             holder.rotation.y = 7.85;
+            holder.material = new BABYLON.StandardMaterial("holderMat", scene);
+            holder.material.diffuseTexture = new BABYLON.Texture("textures/plataforma.jpg", scene);
 
             wheel.material = new BABYLON.StandardMaterial("wheelMat", scene);
             wheel.material.diffuseTexture = new BABYLON.Texture("textures/wheel.jpg", scene);
@@ -291,7 +299,8 @@
             ball.position.z = 50;
 
             ball.physicsImpostor = new BABYLON.PhysicsImpostor(ball, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 1});
-            
+            ball.material = new BABYLON.StandardMaterial("ballMat", scene);
+            ball.material.diffuseTexture = new BABYLON.Texture("textures/orange.jpg", scene);
 
             var ticker = 0;
 
@@ -355,7 +364,7 @@
 
             let chao = BABYLON.MeshBuilder.CreateBox("c", {width: 25, height:0.5, depth:40}, scene);
             chao.material = new BABYLON.StandardMaterial("chaoMat", scene);
-            chao.material.diffuseTexture = new BABYLON.Texture("textures/wood2.jpg", scene);
+            chao.material.diffuseTexture = new BABYLON.Texture("textures/1.jpg", scene);
             chao.position.x = 0;
             chao.position.y = 0;
             chao.position.z = 38;
@@ -363,32 +372,75 @@
             //chao.isVisible = false;
             //fim
 
-            //ribbon
-            var path0 = [];
-            for (let a = 0; a < Math.PI; a += Math.PI / 8) {
-                path0.push(new BABYLON.Vector3(-4, 4 * Math.cos(a), -8 + 4 * Math.sin(a)));
-            }
+            //escada
+            var degrau1 = new BABYLON.MeshBuilder.CreateBox("degrau1", {width: 7, height: 1, depth: 5});
+            degrau1.material = new BABYLON.StandardMaterial("degrau1Mat", scene);
+            degrau1.material.diffuseTexture = new BABYLON.Texture("textures/chao.jpg", scene);
 
-            var path1 = [];
-            for (let a = 0; a < Math.PI; a += Math.PI / 8) {
-                path1.push(new BABYLON.Vector3(0, 4 * Math.cos(a), 2 + 4 * Math.sin(a)));
-            }
+            var degrau2 = new BABYLON.MeshBuilder.CreateBox("degrau2", {width: 7, height: 1, depth: 5});
+            degrau2.material = new BABYLON.StandardMaterial("degrau2Mat", scene);
+            degrau2.material.diffuseTexture = new BABYLON.Texture("textures/chao.jpg", scene);
 
-            var path2 = [];
-            for (let a = 0; a < Math.PI; a += Math.PI / 8) {
-                path2.push(new BABYLON.Vector3(3, 4 * Math.cos(a), -8 + 4 * Math.sin(a)));
-            }
-            
-            //Array of paths to construct ribbon
-            var myPaths1 = [path0, path1, path2];
-            
-            var ribbon = BABYLON.MeshBuilder.CreateRibbon("ribbon", {pathArray: myPaths1, closeArray: true, sideOrientation: BABYLON.Mesh.DOUBLESIDE});
-            ribbon.checkCollisions = true;
+            var degrau3 = new BABYLON.MeshBuilder.CreateBox("degrau3", {width: 7, height: 1, depth: 5});
+            degrau3.material = new BABYLON.StandardMaterial("degrau3Mat", scene);
+            degrau3.material.diffuseTexture = new BABYLON.Texture("textures/chao.jpg", scene);
 
-            ribbon.position.y = -33;
-            ribbon.position.z = -20;
-            ribbon.rotation.x = -4.5;
-    
+            var degrau4 = new BABYLON.MeshBuilder.CreateBox("degrau4", {width: 7, height: 1, depth: 5});
+            degrau4.material = new BABYLON.StandardMaterial("degrau4Mat", scene);
+            degrau4.material.diffuseTexture = new BABYLON.Texture("textures/chao.jpg", scene);
+
+            var degrau5 = new BABYLON.MeshBuilder.CreateBox("degrau5", {width: 7, height: 1, depth: 5});
+            degrau5.material = new BABYLON.StandardMaterial("degrau5Mat", scene);
+            degrau5.material.diffuseTexture = new BABYLON.Texture("textures/chao.jpg", scene);
+
+            var degrau6 = new BABYLON.MeshBuilder.CreateBox("degrau6", {width: 7, height: 1, depth: 5});
+            degrau6.material = new BABYLON.StandardMaterial("degrau6Mat", scene);
+            degrau6.material.diffuseTexture = new BABYLON.Texture("textures/chao.jpg", scene);
+
+            var degrau7 = new BABYLON.MeshBuilder.CreateBox("degrau7", {width: 7, height: 1, depth: 5});
+            degrau7.material = new BABYLON.StandardMaterial("degrau7Mat", scene);
+            degrau7.material.diffuseTexture = new BABYLON.Texture("textures/chao.jpg", scene);
+
+            //posiçao degraus
+            degrau1.position.y = -27;
+            degrau1.position.z = -20;
+
+            degrau2.position.y = -28;
+            degrau2.position.z = -18;
+
+            degrau3.position.y = -29;
+            degrau3.position.z = -16;
+
+            degrau4.position.y = -30;
+            degrau4.position.z = -14;
+
+            degrau5.position.y = -31;
+            degrau5.position.z = -12;
+
+            degrau6.position.y = -32;
+            degrau6.position.z = -10;
+
+            degrau7.position.y = -33;
+            degrau7.position.z = -8;
+
+            //torus
+            const torus = BABYLON.MeshBuilder.CreateTorus("torus", {diameter: 6, thickness: 2});
+            torus.position.y = -24;
+            torus.position.z = 68.5;
+            torus.material = new BABYLON.StandardMaterial("torusMat", scene);
+            torus.material.diffuseTexture = new BABYLON.Texture("textures/pneu.png", scene);
+
+            const torus2 = BABYLON.MeshBuilder.CreateTorus("torus2", {diameter: 6, thickness: 2});
+            torus2.position.y = -26;
+            torus2.position.z = 68.5;
+            torus2.material = new BABYLON.StandardMaterial("torus2Mat", scene);
+            torus2.material.diffuseTexture = new BABYLON.Texture("textures/pneu.png", scene);
+
+            const torus3 = BABYLON.MeshBuilder.CreateTorus("torus3", {diameter: 6, thickness: 2});
+            torus3.position.y = -28;
+            torus3.position.z = 68.5;
+            torus3.material = new BABYLON.StandardMaterial("torus3Mat", scene);
+            torus3.material.diffuseTexture = new BABYLON.Texture("textures/pneu.png", scene);
             
             [box, box1, box2, box3, box4, chao].forEach((mesh) => {
                 mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0});
@@ -404,16 +456,22 @@
             });
 
             //fisica cilindros
-            [cilindro1, cilindro2, cilindro3, cilindro4, cilindro5, cilindro6, cilindro7, cilindro8, cilindro9, cilindro10].forEach((mesh) => {
+            // [cilindro1, cilindro2, cilindro3, cilindro4, cilindro5, cilindro6, cilindro7, cilindro8, cilindro9, cilindro10].forEach((mesh) => {
+            //     mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.CylinderImpostor, {mass: 0});
+            // });
+
+            //fisica degraus
+            [degrau1, degrau2, degrau3, degrau4, degrau5, degrau6, degrau7].forEach((mesh) => {
                 mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0});
             });
                 
             wheel.physicsImpostor = new BABYLON.PhysicsImpostor(wheel, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 10});
             holder.physicsImpostor = new BABYLON.PhysicsImpostor(holder, BABYLON.PhysicsImpostor.SphereImpostor, {mass: 0});
 
-            //fisica ribbon
-            //ribbon.physicsImpostor = new BABYLON.PhysicsImpostor(ribbon, BABYLON.PhysicsImpostor.HeightmapImpostor, {mass: 0});
-            
+            torus.physicsImpostor = new BABYLON.PhysicsImpostor(torus, BABYLON.PhysicsImpostor.MeshImpostor, {mass: 0});
+            torus2.physicsImpostor = new BABYLON.PhysicsImpostor(torus, BABYLON.PhysicsImpostor.MeshImpostor, {mass: 0});
+            torus3.physicsImpostor = new BABYLON.PhysicsImpostor(torus, BABYLON.PhysicsImpostor.MeshImpostor, {mass: 0});
+
             var joint1 = new BABYLON.HingeJoint({  
                 mainPivot: new BABYLON.Vector3(0, 0, 0),
                 connectedPivot: new BABYLON.Vector3(0, 0, 0),
@@ -425,6 +483,38 @@
             holder.physicsImpostor.addJoint(wheel.physicsImpostor, joint1);  
             
             joint1.setMotor(3 * forceFactor, 20 * forceFactor);
+
+            // Create a particle system
+            var particleSystem = new BABYLON.ParticleSystem("particles", 5000);
+            var particleSystem2 = new BABYLON.ParticleSystem("particles", 5000);
+
+            //Texture of each particle
+            particleSystem.particleTexture = new BABYLON.Texture("textures/estrela.png");
+            particleSystem2.particleTexture = new BABYLON.Texture("textures/estrela.png");
+
+            //Create box whose position will determine the emission origin
+            const ponto = BABYLON.MeshBuilder.CreateSphere("ponto", {});
+            ponto.position = new BABYLON.Vector3(0.5, 10, -40);
+            ponto.isVisible = false;
+
+            // Position where the particles are emitted from
+            particleSystem.emitter = ponto;
+
+            particleSystem.emitRate = 50;
+
+            particleSystem.start();
+
+            //Create box whose position will determine the emission origin
+            const ponto2 = BABYLON.MeshBuilder.CreateSphere("ponto2", {});
+            ponto2.position = new BABYLON.Vector3(-0.5, 10, -40);
+            ponto2.isVisible = false;
+
+            // Position where the particles are emitted from
+            particleSystem2.emitter = ponto2;
+
+            particleSystem2.emitRate = 50;
+
+            particleSystem2.start();
 
             return scene;
         }
