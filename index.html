@@ -133,7 +133,7 @@
             }
 
             //plataformas
-            var box = BABYLON.MeshBuilder.CreateBox("box1", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
+            var box = BABYLON.MeshBuilder.CreateBox("box1", {length: 10, width: 15, depth: 5, height: 0.1}, scene);
             box.material = new BABYLON.StandardMaterial("boxMat", scene);
             box.material.diffuseTexture = new BABYLON.Texture("textures/plataforma.jpg", scene);
             box.position.x = 0;
@@ -141,6 +141,23 @@
             box.rotation.y = 1.56;
             box.position.z = -55;
             box.rotation.z = 0.2;
+
+            var parede = BABYLON.MeshBuilder.CreateBox("parede", {length: 1, width: 5, depth: 0.1, height: 10}, scene);
+            parede.position.y = 28;
+            parede.position.z = -62.5;
+            parede.isVisible = false;
+
+            var parede2 = BABYLON.MeshBuilder.CreateBox("parede2", {length: 20, width: 0.01, depth: 20, height: 10}, scene);
+            parede2.position.x = 2.3;
+            parede2.position.y = 28;
+            parede2.position.z = -56;
+            parede2.isVisible = false;
+
+            var parede3 = BABYLON.MeshBuilder.CreateBox("parede3", {length: 20, width: 0.01, depth: 20, height: 10}, scene);
+            parede3.position.x = -2.3;
+            parede3.position.y = 28;
+            parede3.position.z = -56;
+            parede3.isVisible = false;
 
             var plat1 = BABYLON.MeshBuilder.CreateBox("plat1", {lenght: 10, width: 15, depth: 5, height: 0.1}, scene);
             plat1.material = new BABYLON.StandardMaterial("plat1Mat", scene);
@@ -442,7 +459,7 @@
             torus3.material = new BABYLON.StandardMaterial("torus3Mat", scene);
             torus3.material.diffuseTexture = new BABYLON.Texture("textures/pneu.png", scene);
             
-            [box, box1, box2, box3, box4, chao].forEach((mesh) => {
+            [parede, parede2, parede3, box, box1, box2, box3, box4, chao].forEach((mesh) => {
                 mesh.physicsImpostor = new BABYLON.PhysicsImpostor(mesh, BABYLON.PhysicsImpostor.BoxImpostor, {mass: 0});
             });
             //fisica domino
